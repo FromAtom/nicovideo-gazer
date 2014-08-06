@@ -27,6 +27,21 @@ chrome.pageAction.onClicked.addListener(function(tab) {
     }
     else {
         chrome.tabs.executeScript(null, { file: "window_resize.js"}, function(result) {
+            chrome.windows.get(tab.windowId, {
+                populate: false
+            },function (result){
+                if (result) {
+                    var window_info = {
+                        top: result.top,
+                        left: result.left,
+                        width: result.width,
+                        height: result.height
+                    };
+
+                    localStorage.setItem(window_info_key, JSON.stringify(window_info));
+                }
+            });
+
             var player_size = JSON.parse(result);
             var padding = 90; // ハードコーディングしたくない
             chrome.windows.update(tab.windowId, {
@@ -34,6 +49,5 @@ chrome.pageAction.onClicked.addListener(function(tab) {
                 height: player_size.height + padding
             });
         });
-
     }
 });
