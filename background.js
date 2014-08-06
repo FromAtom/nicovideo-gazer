@@ -1,5 +1,5 @@
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if(true) {
+    if( tab.url.indexOf("www.nicovideo.jp/watch/") != -1) {
         chrome.pageAction.show(tabId);
     }
 });
