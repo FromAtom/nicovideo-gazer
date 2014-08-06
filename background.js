@@ -45,6 +45,7 @@ chrome.pageAction.onClicked.addListener(function(tab) {
 
         // Resize window
         chrome.tabs.executeScript(null, { file: "window_resize.js"}, function(result) {
+            if (!result) { return false; }
             var player_size = JSON.parse(result);
             var padding = 90; // Hard cording is evil
 
