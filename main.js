@@ -62,8 +62,6 @@ function disappearIds(id_names) {
     }
 }
 
-document.body.style.backgroundColor='red';
-
 var id_names = [
     'siteHeader',
     'playlist',
@@ -88,7 +86,5 @@ var blank_names = [
     'playerContainerWrapper'
 ];
 deleteBlank(blank_names);
-
-document.body.style.backgroundColor='green';
 
 })();
