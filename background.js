@@ -1,5 +1,6 @@
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if( tab.url.indexOf("www.nicovideo.jp/watch/") != -1) {
+        localStorage.clear();
         chrome.pageAction.show(tabId);
     }
 });
@@ -26,24 +27,27 @@ chrome.pageAction.onClicked.addListener(function(tab) {
         localStorage.removeItem(window_info_key);
     }
     else {
+        // Save original window info
+        chrome.windows.get(tab.windowId, {
+            populate: false
+        },function (result) {
+            if (!result) { return false; }
+
+            var window_info = {
+                top: result.top,
+                left: result.left,
+                width: result.width,
+                height: result.height
+            };
+
+            localStorage.setItem(window_info_key, JSON.stringify(window_info));
+        });
+
+        // Resize window
         chrome.tabs.executeScript(null, { file: "window_resize.js"}, function(result) {
-            chrome.windows.get(tab.windowId, {
-                populate: false
-            },function (result){
-                if (result) {
-                    var window_info = {
-                        top: result.top,
-                        left: result.left,
-                        width: result.width,
-                        height: result.height
-                    };
-
-                    localStorage.setItem(window_info_key, JSON.stringify(window_info));
-                }
-            });
-
             var player_size = JSON.parse(result);
-            var padding = 90; // ハードコーディングしたくない
+            var padding = 90; // Hard cording is evil
+
             chrome.windows.update(tab.windowId, {
                 width: player_size.width,
                 height: player_size.height + padding
