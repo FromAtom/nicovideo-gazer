@@ -1,0 +1,8 @@
+(function (){
+    var player_element = document.getElementById('playerNicoplayer');
+    var player_size = {
+        width: player_element.clientWidth,
+        height: player_element.clientHeight
+    };
+    return JSON.stringify(player_size);
+})();
