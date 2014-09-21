@@ -1,6 +1,5 @@
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if( tab.url.indexOf("www.nicovideo.jp/watch/") != -1) {
-        localStorage.clear();
         chrome.pageAction.show(tabId);
     }
 });
@@ -47,7 +46,7 @@ chrome.pageAction.onClicked.addListener(function(tab) {
         chrome.tabs.executeScript(null, { file: "window_resize.js"}, function(result) {
             if (!result) { return false; }
             var player_size = JSON.parse(result);
-            var padding = 90; // Hard cording is evil
+            var padding = 0; // For bookmark bar BUT hard cording is evil
 
             chrome.windows.update(tab.windowId, {
                 width: player_size.width,
@@ -55,4 +54,5 @@ chrome.pageAction.onClicked.addListener(function(tab) {
             });
         });
     }
+
 });
