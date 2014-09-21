@@ -1,10 +1,11 @@
 {
     "name": "Nico-video gazer",
-    "version": "0.1",
+    "version": "0.2",
     "manifest_version": 2,
     "description": "ニコニコ動画を動画だけにします。",
     "permissions": [
-        "tabs", "http://*/*", "https://*/*"
+        "tabs",
+        "http://www.nicovideo.jp/"
     ],
     "background": {
         "scripts": [
