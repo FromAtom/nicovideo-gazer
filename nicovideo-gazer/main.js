@@ -1,5 +1,5 @@
 var NicovideoGazer = function () {
-    this.original_pagging = {};
+    this.original_padding = {};
     this.original_margin  = {};
     this.original_height  = {};
 
@@ -33,10 +33,10 @@ NicovideoGazer.prototype.removeBlank = function () {
         var target_element = document.getElementById(target_name);
 
         if (target_element) {
-            var original_padding = target_element.style.padding;
-            var original_margin  = target_element.style.margin;
+            var original_padding = document.defaultView.getComputedStyle(target_element).padding;
+            var original_margin  = document.defaultView.getComputedStyle(target_element).margin;
 
-            this.original_pagging[target_name] = original_padding;
+            this.original_padding[target_name] = original_padding;
             this.original_margin[target_name] = original_margin;
 
             target_element.style.padding = target_element.style.margin = '0px';
@@ -50,16 +50,20 @@ NicovideoGazer.prototype.padBlank = function () {
         var target_element = document.getElementById(target_name);
 
         if (target_element) {
-            var padding = '0px';
-            var margin  = '0px';
+            var padding;
+            var margin;
 
-            if ( this.original_pagging[target_name] && this.original_margin[target_name] ) {
-                padding = this.original_pagging[target_name];
-                margin  = this.original_margin[target_name];
-                this.original_pagging[target_name] = this.original_margin[target_name] = null;
-
+            if ( this.original_padding[target_name] ) {
+                padding = this.original_padding[target_name];
                 target_element.style.padding = padding;
-                target_element.style.margin  = margin;
+                this.original_padding[target_name] = null;
+            }
+
+            if ( this.original_margin[target_name] ) {
+                margin  = this.original_margin[target_name];
+                console.log(margin);
+                target_element.style.margin = margin;
+                this.original_margin[target_name] = null;
             }
         }
     }
@@ -116,7 +120,7 @@ NicovideoGazer.prototype.adjustHeight = function () {
     }
 };
 
-NicovideoGazer.prototype.repositHeight = function () {
+NicovideoGazer.prototype.restoreHeight = function () {
     for (var i = 0; i < this.adjust_height_ids.length; i++) {
         var target_element = document.getElementById(this.adjust_height_ids[i]);
 
@@ -127,18 +131,17 @@ NicovideoGazer.prototype.repositHeight = function () {
 };
 
 NicovideoGazer.prototype.disappear = function () {
+    this.removeBlank();
     this.disappearIds();
     this.disappearClasses();
     this.adjustHeight();
-    this.removeBlank();
 };
 
 NicovideoGazer.prototype.appear = function () {
+    this.padBlank();
     this.appearIds();
     this.appearClasses();
-    this.repositHeight();
-    this.padBlank();
+    this.restoreHeight();
 };
 
 var nicovideoGazer = new NicovideoGazer();
-nicovideoGazer.disappear();
