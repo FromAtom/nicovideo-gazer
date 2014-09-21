@@ -61,7 +61,10 @@ NicovideoGazer.prototype.padBlank = function () {
 
             if ( this.original_margin[target_name] ) {
                 margin  = this.original_margin[target_name];
-                console.log(margin);
+                if (target_name === 'playerAlignmentArea') {
+                    margin = '0 auto';
+                }
+
                 target_element.style.margin = margin;
                 this.original_margin[target_name] = null;
             }
