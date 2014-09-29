@@ -1,7 +1,12 @@
 var NicovideoGazer = function () {
+    this.original_body_style = '';
     this.original_padding = {};
     this.original_margin  = {};
     this.original_height  = {};
+    this.original_scroll  = {
+        x: 0,
+        y: 0
+    };
 
     this.id_names = [
         'siteHeader',
@@ -133,18 +138,42 @@ NicovideoGazer.prototype.restoreHeight = function () {
     }
 };
 
+NicovideoGazer.prototype.adjustScroll = function () {
+    var scroll_x = document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+    var scroll_y = document.documentElement.scrollTop  || document.body.scrollTop || 0;
+    this.original_scroll.x = scroll_x;
+    this.original_scroll.y = scroll_y;
+
+    window.scrollTo(0, 0);
+
+    this.original_body_style = document.body.style.overflow || '';
+    document.body.style.overflow = 'hidden';
+};
+
+NicovideoGazer.prototype.restoreScroll = function () {
+    var scroll_x = this.original_scroll.x;
+    var scroll_y = this.original_scroll.y;
+
+    window.scrollTo(scroll_x, scroll_y);
+
+    document.body.style.overflow = this.original_body_style || '';
+};
+
+
 NicovideoGazer.prototype.disappear = function () {
     this.removeBlank();
     this.disappearIds();
     this.disappearClasses();
     this.adjustHeight();
+    this.adjustScroll();
 };
 
 NicovideoGazer.prototype.appear = function () {
-    this.padBlank();
-    this.appearIds();
-    this.appearClasses();
+    this.restoreScroll();
     this.restoreHeight();
+    this.appearClasses();
+    this.appearIds();
+    this.padBlank();
 };
 
 var nicovideoGazer = new NicovideoGazer();
