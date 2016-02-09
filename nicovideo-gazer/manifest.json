@@ -1,0 +1,23 @@
+{
+    "name": "Nico-video gazer",
+    "version": "0.2",
+    "manifest_version": 2,
+    "description": "ニコニコ動画を動画だけにします。",
+    "permissions": [
+        "tabs",
+        "http://www.nicovideo.jp/"
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "page_action": {
+        "default_icon": "icon19.png",
+        "default_title": "Nico-video gazer"
+    },
+    "icons": {
+        "48": "icon48.png",
+        "128": "icon128.png"
+    }
+}
